@@ -1,4 +1,4 @@
-# Number-to-text translator
+# Number-to-text converter
 This simple program in C outputs the text representation of a number in either English or Kazakh, depending on the current system locale.
 
 ## License
