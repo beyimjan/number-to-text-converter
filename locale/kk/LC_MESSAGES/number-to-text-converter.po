@@ -1,0 +1,157 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: number-to-text-converter 0.3.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-03-27 03:21+0600\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Tamerlan Bimzhanov <bimzhanovt.net@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: kk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: main.c:27
+msgid "zero"
+msgstr "нөл"
+
+#: main.c:27
+msgid "one"
+msgstr "бір"
+
+#: main.c:27
+msgid "two"
+msgstr "екі"
+
+#: main.c:27
+msgid "three"
+msgstr "үш"
+
+#: main.c:27
+msgid "four"
+msgstr "төрт"
+
+#: main.c:27
+msgid "five"
+msgstr "бес"
+
+#: main.c:28
+msgid "six"
+msgstr "алты"
+
+#: main.c:28
+msgid "seven"
+msgstr "жеті"
+
+#: main.c:28
+msgid "eight"
+msgstr "сегіз"
+
+#: main.c:28
+msgid "nine"
+msgstr "тоғыз"
+
+#: main.c:28 main.c:32
+msgid "ten"
+msgstr "он"
+
+#: main.c:32
+msgid "eleven"
+msgstr "он бір"
+
+#: main.c:32
+msgid "twelve"
+msgstr "он екі"
+
+#: main.c:33
+msgid "thirteen"
+msgstr "он үш"
+
+#: main.c:33
+msgid "fourteen"
+msgstr "он төрт"
+
+#: main.c:33
+msgid "fifteen"
+msgstr "он бес"
+
+#: main.c:34
+msgid "sixteen"
+msgstr "он алты"
+
+#: main.c:34
+msgid "seventeen"
+msgstr "он жеті"
+
+#: main.c:34
+msgid "eighteen"
+msgstr "он сегіз"
+
+#: main.c:34
+msgid "nineteen"
+msgstr "он тоғыз"
+
+#: main.c:38
+msgid "twenty"
+msgstr "жиырма"
+
+#: main.c:38
+msgid "thirty"
+msgstr "отыз"
+
+#: main.c:38
+msgid "forty"
+msgstr "қырық"
+
+#: main.c:38
+msgid "fifty"
+msgstr "елу"
+
+#: main.c:39
+msgid "sixty"
+msgstr "алпыс"
+
+#: main.c:39
+msgid "seventy"
+msgstr "жетпіс"
+
+#: main.c:39
+msgid "eighty"
+msgstr "сексен"
+
+#: main.c:39
+msgid "ninety"
+msgstr "тоқсан"
+
+#: main.c:135
+msgid "quadrillion"
+msgstr "квадриллион"
+
+#: main.c:138
+msgid "trillion"
+msgstr "триллион"
+
+#: main.c:141
+msgid "billion"
+msgstr "миллиард"
+
+#: main.c:144
+msgid "million"
+msgstr "миллион"
+
+#: main.c:147
+msgid "thousand"
+msgstr "мың"
+
+#: main.c:150
+msgid "hundred"
+msgstr "жүз"
+
+#: main.c:204
+msgid "Too few arguments\n"
+msgstr "Аргументтер жеткіліксіз\n"
+
+#: main.c:217
+msgid "Something went wrong\n"
+msgstr "Бірдеңе дұрыс болмады\n"

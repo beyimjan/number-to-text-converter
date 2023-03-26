@@ -2,6 +2,14 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <locale.h>
+#include <libintl.h>
+
+#define LOCALEBASEDIR "."
+#define TEXTDOMAIN "number-to-text-converter"
+
+#define _(STR) gettext(STR)
+#define Q_(STR) (STR)
 
 enum { max_digits_count = 18 };
 
@@ -21,18 +29,19 @@ struct number_sll {
 };
 
 static const char  *units[] = {
-    "zero", "one", "two", "three", "four", "five",
-    "six", "seven", "eight", "nine", "ten"
+    Q_("zero"), Q_("one"), Q_("two"), Q_("three"), Q_("four"), Q_("five"),
+    Q_("six"), Q_("seven"), Q_("eight"), Q_("nine"), Q_("ten")
 };
 
 static const char *teens[] = {
-    "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen",
-    "sixteen", "seventeen", "eighteen", "nineteen"
+    Q_("ten"), Q_("eleven"), Q_("twelve"),
+    Q_("thirteen"), Q_("fourteen"), Q_("fifteen"),
+    Q_("sixteen"), Q_("seventeen"), Q_("eighteen"), Q_("nineteen")
 };
 
 static const char *tens[] = {
-    "", "", "twenty", "thirty", "forty", "fifty",
-    "sixty", "seventy", "eighty", "ninety"
+    "", "", Q_("twenty"), Q_("thirty"), Q_("forty"), Q_("fifty"),
+    Q_("sixty"), Q_("seventy"), Q_("eighty"), Q_("ninety")
 };
 
 static void number_sll_init(struct number_sll *list)
@@ -128,31 +137,31 @@ static void number_sll_print_as_words(const struct number_sll *list)
         switch (tmp->name)
         {
         case nn_quadrillion:
-            fputs("quadrillion", stdout);
+            fputs(_("quadrillion"), stdout);
             break;
         case nn_trillion:
-            fputs("trillion", stdout);
+            fputs(_("trillion"), stdout);
             break;
         case nn_billion:
-            fputs("billion", stdout);
+            fputs(_("billion"), stdout);
             break;
         case nn_million:
-            fputs("million", stdout);
+            fputs(_("million"), stdout);
             break;
         case nn_thousand:
-            fputs("thousand", stdout);
+            fputs(_("thousand"), stdout);
             break;
         case nn_hundred:
-            fputs("hundred", stdout);
+            fputs(_("hundred"), stdout);
             break;
         case nn_ten:
-            fputs(tens[tmp->number], stdout);
+            fputs(gettext(tens[tmp->number]), stdout);
             break;
         case nn_teen:
-            fputs(teens[tmp->number], stdout);
+            fputs(gettext(teens[tmp->number]), stdout);
             break;
         case nn_unit:
-            fputs(units[tmp->number], stdout);
+            fputs(gettext(units[tmp->number]), stdout);
             break;
         }
 
@@ -196,8 +205,13 @@ int main(int argc, char *argv[]) {
     int is_valid_string;
     char *number_start, *number_end;
 
+    setlocale(LC_CTYPE, "");
+    setlocale(LC_MESSAGES, "");
+    bindtextdomain(TEXTDOMAIN, LOCALEBASEDIR);
+    textdomain(TEXTDOMAIN);
+
     if(argc < 2) {
-        fputs("Too few arguments\n", stderr);
+        fputs(_("Too few arguments\n"), stderr);
         return 1;
     }
 
@@ -210,7 +224,7 @@ int main(int argc, char *argv[]) {
         number_sll_print_as_words(&number_list);
         number_sll_delete(&number_list);
     } else {
-        fputs("Something went wrong\n", stderr);
+        fputs(_("Something went wrong\n"), stderr);
     }
 
     return 0;
