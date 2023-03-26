@@ -3,7 +3,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-enum number_name { nn_units, nn_teens, nn_tens };
+enum { max_digits_count = 18 };
+
+enum number_name {
+    nn_unit, nn_teen, nn_ten, nn_hundred,
+    nn_thousand, nn_million, nn_billion, nn_trillion, nn_quadrillion
+};
 
 struct number_item {
     int number;
@@ -55,6 +60,7 @@ static void number_sll_push(struct number_sll *list,
     tmp->next = NULL;
     if(list->first) {
         list->last->next = tmp;
+        list->last = tmp;
     } else {
         list->first = tmp;
         list->last = tmp;
@@ -64,16 +70,47 @@ static void number_sll_push(struct number_sll *list,
 static void number_sll_get(struct number_sll *list,
     const char *start, const char *end)
 {
-    for(; *start == '0' && start != end; start++)
-        { } /* Skip all leading zeros except the last one */
+    for(; 3 <= end - start && end - start < 18; start += (end - start) % 3 + 1)
+    {
+        const char *limit = start + (end - start) % 3;
+        for(; *start == '0' && start < limit; start++)
+            { }
+
+        if(*start == '0')
+            continue;
+
+        number_sll_get(list, start, start + (end - start) % 3);
+        if(3 <= end - start && end - start < 6)
+            number_sll_push(list, 0, nn_thousand);
+        else if(6 <= end - start && end - start < 9)
+            number_sll_push(list, 0, nn_million);
+        else if(9 <= end - start && end - start < 12)
+            number_sll_push(list, 0, nn_billion);
+        else if(12 <= end - start && end - start < 15)
+            number_sll_push(list, 0, nn_trillion);
+        else if(15 <= end - start && end - start < 18)
+            number_sll_push(list, 0, nn_quadrillion);
+    }
+
+    if(2 == end - start) {
+        if(*start != '0') {
+            number_sll_push(list, *start - '0', nn_unit);
+            number_sll_push(list, 0, nn_hundred);
+        }
+        start++;
+    }
 
     if(1 == end - start) {
         if(*start == '1') {
             start++;
-            number_sll_push(list, *start - '0', nn_teens);
+            number_sll_push(list, *start - '0', nn_teen);
             return;
+        } else if(*start != '0') {
+            number_sll_push(list, *start - '0', nn_ten);
+            start++;
+            if(*start == '0')
+                return;
         } else {
-            number_sll_push(list, *start - '0', nn_tens);
             start++;
             if(*start == '0')
                 return;
@@ -81,29 +118,45 @@ static void number_sll_get(struct number_sll *list,
     }
 
     if(0 == end - start)
-        number_sll_push(list, *start - '0', nn_units);
+        number_sll_push(list, *start - '0', nn_unit);
 }
 
-static void number_sll_print(const struct number_sll *list)
+static void number_sll_print_as_words(const struct number_sll *list)
 {
     struct number_item *tmp;
     for(tmp = list->first; tmp; tmp = tmp->next) {
         switch (tmp->name)
         {
-        case nn_tens:
+        case nn_quadrillion:
+            fputs("quadrillion", stdout);
+            break;
+        case nn_trillion:
+            fputs("trillion", stdout);
+            break;
+        case nn_billion:
+            fputs("billion", stdout);
+            break;
+        case nn_million:
+            fputs("million", stdout);
+            break;
+        case nn_thousand:
+            fputs("thousand", stdout);
+            break;
+        case nn_hundred:
+            fputs("hundred", stdout);
+            break;
+        case nn_ten:
             fputs(tens[tmp->number], stdout);
             break;
-        case nn_teens:
+        case nn_teen:
             fputs(teens[tmp->number], stdout);
             break;
-        case nn_units:
+        case nn_unit:
             fputs(units[tmp->number], stdout);
             break;
         }
 
-        if(tmp->name == nn_tens && tmp->next && tmp->next->name == nn_units)
-            putchar('-');
-        else
+        if(tmp->next)
             putchar(' ');
     }
     putchar('\n');
@@ -111,7 +164,9 @@ static void number_sll_print(const struct number_sll *list)
 
 /* Searches for a number in a string. If the number is found, it returns 1;
  * otherwise, it returns 0. Leading and trailing whitespace are allowed.
- * If the string contains invalid characters, it will return 0. */
+ * Leading zeros are skipped. If the number length exceeds the
+ * `max_digit_count` constant, it returns 0.
+ * If the string contains invalid characters, it returns 0. */
 static int search_number_in_string(const char *str, char **start, char **end)
 {
     *start = NULL;
@@ -123,7 +178,7 @@ static int search_number_in_string(const char *str, char **start, char **end)
         { } /* Skip leading whitespace characters */
 
     for(; isdigit(*str); str++)
-        if(!*start) {
+        if(!*start || **start == '0') {
             *start = str;
             *end = str;
         } else {
@@ -134,7 +189,7 @@ static int search_number_in_string(const char *str, char **start, char **end)
         if(!isspace(*str))
             return 0; /* String has non-whitespace character after digits */
 
-    return *start != NULL;
+    return *start != NULL && *end - *start < max_digits_count;
 }
 
 int main(int argc, char *argv[]) {
@@ -142,7 +197,7 @@ int main(int argc, char *argv[]) {
     char *number_start, *number_end;
 
     if(argc < 2) {
-        puts("Too few arguments");
+        fputs("Too few arguments\n", stderr);
         return 1;
     }
 
@@ -152,10 +207,10 @@ int main(int argc, char *argv[]) {
         struct number_sll number_list;
         number_sll_init(&number_list);
         number_sll_get(&number_list, number_start, number_end);
-        number_sll_print(&number_list);
+        number_sll_print_as_words(&number_list);
         number_sll_delete(&number_list);
     } else {
-        puts("Something went wrong");
+        fputs("Something went wrong\n", stderr);
     }
 
     return 0;
