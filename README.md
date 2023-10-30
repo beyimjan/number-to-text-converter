@@ -10,7 +10,7 @@ $ make -f build/Makefile
 ## Usage
 First, copy the built program to the `locale` directory:
 ```sh
-$ cp number-to-text-translator locale/
+$ cp number-to-text-converter locale/
 ```
 
 Go to the `locale` directory:
@@ -20,12 +20,12 @@ $ cd locale/
 
 Run the following command to get the output in English:
 ```sh
-$ LC_ALL= LANGUAGE= ./number-to-text-translator <number>
+$ LC_ALL= LANGUAGE= ./number-to-text-converter <number>
 ```
 
 or the following to get the output in Kazakh:
 ```sh
-$ LC_ALL=kk_KZ.UTF-8 LANGUAGE=kk ./number-to-text-translator <number>
+$ LC_ALL=kk_KZ.UTF-8 LANGUAGE=kk ./number-to-text-converter <number>
 ```
 
 ## License
